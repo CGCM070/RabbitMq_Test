@@ -4,7 +4,9 @@ package com.example.rabbitmq_test.publisher;
 import com.example.rabbitmq_test.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class RabbitMQJsonProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQJsonProducer.class);
+    private final AmqpTemplate amqpTemplate;
 
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
@@ -21,9 +24,14 @@ public class RabbitMQJsonProducer {
 
     private RabbitTemplate rabbitTemplate;
 
+    public RabbitMQJsonProducer(@Qualifier("amqpTemplate") AmqpTemplate amqpTemplate) {
+        this.amqpTemplate = amqpTemplate;
+    }
+
 
     public void SendJsonMsg (User user){
         LOGGER.info("Sending message: {}", user.toString());
-        rabbitTemplate.convertAndSend(exchange, routingJsongKey, user);
+        amqpTemplate.convertAndSend(exchange, routingJsongKey, user);
+
     }
 }
