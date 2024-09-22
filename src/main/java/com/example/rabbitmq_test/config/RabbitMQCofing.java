@@ -7,8 +7,9 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Configurable
+@Configuration
 public class RabbitMQCofing {
     /*
         Valores de propiedades de application.properties
@@ -24,8 +25,8 @@ public class RabbitMQCofing {
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.routing.key.name}")
-    private String routingKey = "rabbitmq.routing.key";
+    @Value("${rabbitmq.routing.key}")
+    private String routingKey;
 
     // bean para rabbitmq queue
     @Bean
